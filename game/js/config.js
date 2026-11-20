@@ -15,7 +15,7 @@ var DISTRICTS = [
   { id: 'docks',    name: 'Docks & Industry', x: 0, y: 1200, w: 1600, h: 1200, ground: '#5c5648', style: 'ware',   desc: 'Cranes, containers and warehouses' },
   { id: 'neon',     name: 'Neon Row',      x: 1600, y: 1200, w: 1600, h: 1200, ground: '#4a3a55', style: 'neon',   desc: 'Casinos, clubs and the Lucky Palm' },
   { id: 'suburbs',  name: 'Hills & Suburbs', x: 3200, y: 1200, w: 1600, h: 1200, ground: '#5f7a4e', style: 'house',  desc: 'Houses, parks and the stadium' },
-  { id: 'marina',   name: 'Marina & Beach', x: 0,   y: 2400, w: 4800, h: 1200, ground: '#c2a878', style: 'beach',  desc: 'Pier, boardwalk, lighthouse and sand' },
+  { id: 'marina',   name: 'Marina & Beach', x: 0,   y: 2400, w: 4800, h: 1200, ground: '#c2a878', style: 'low',    desc: 'Pier, boardwalk, lighthouse and sand' },
 ];
 
 // 18 named landmarks with fixed positions (x, y, radius, colour, label).

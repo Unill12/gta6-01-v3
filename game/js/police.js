@@ -146,12 +146,21 @@ var Police = {
       var nx = car.x + Math.cos(car.angle) * car.speed * dt;
       var ny = car.y + Math.sin(car.angle) * car.speed * dt;
       var push = City.collideCircle(nx, ny, 34);
-      if (push) { nx += push.x; ny += push.y; car.speed *= 0.6; }
+      if (push) {
+        nx += push.x; ny += push.y; car.speed *= 0.6;
+        // Wall slide: head-on into a wall makes zero progress.
+        var tx = -push.y, ty = push.x, tl = Math.hypot(tx, ty) || 1;
+        tx /= tl; ty /= tl;
+        if ((p.x - car.x) * tx + (p.y - car.y) * ty < 0) { tx = -tx; ty = -ty; }
+        nx += tx * car.speed * dt * 0.9; ny += ty * car.speed * dt * 0.9;
+        var push2 = City.collideCircle(nx, ny, 34);
+        if (push2) { nx += push2.x; ny += push2.y; }
+      }
       var cc = City.clampToWorld(nx, ny, 30);
       car.x = cc.x; car.y = cc.y;
       // Ram the player.
       if (p.car && dist(car.x, car.y, p.x, p.y) < 52) {
-        Vehicles.damage(p.car, 14 * dt * 10);
+        Vehicles.damage(p.car, 25 * dt);
         car.speed *= 0.7;
         if (Math.random() < dt * 2) AudioSys.crash();
       }

@@ -16,7 +16,11 @@ var Player = {
     this.weapons = ['fist', 'pistol']; this.ammo = { pistol: 60 };
     this.fireCooldown = 0; this.kills = 0; this.carsStolen = 0;
   },
-  weapon: function () { return WEAPONS[this.weaponIdx] || WEAPONS[0]; },
+  weapon: function () {
+    var id = this.weapons[this.weaponIdx] || 'fist';
+    for (var i = 0; i < WEAPONS.length; i++) if (WEAPONS[i].id === id) return WEAPONS[i];
+    return WEAPONS[0];
+  },
   giveWeapon: function (id, ammo) {
     if (this.weapons.indexOf(id) < 0) this.weapons.push(id);
     this.ammo[id] = (this.ammo[id] || 0) + (ammo || 60);

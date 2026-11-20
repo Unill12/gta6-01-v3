@@ -89,7 +89,10 @@ var Missions = {
       var self = this;
       var n = s.n;
       for (var i = 0; i < n; i++) {
-        var e = Enemies.spawn(s.x + rand(-120, 120), s.y + rand(-120, 120), {
+        // Spawn outside buildings so the fight is always winnable.
+        var sx = s.x + rand(-120, 120), sy = s.y + rand(-120, 120), tries = 0;
+        while (tries++ < 12 && City.insideBuilding(sx, sy, 16)) { sx = s.x + rand(-160, 160); sy = s.y + rand(-160, 160); }
+        var e = Enemies.spawn(sx, sy, {
           name: s.boss || 'Kane Goon', hp: s.hp || 60,
           onKill: function () { self.killed++; },
         });

@@ -37,10 +37,10 @@ var City = {
         var d = this.districtAt(cx, cy);
         if (!d) continue;
         if (this.inWater(cx, cy) || this.inRect(cx, cy, this.runway)) continue;
-        if (this.nearLandmark(cx, cy, 150)) continue;
+        if (this.nearLandmark(cx, cy, 110)) continue;
         var roll = rng();
         if (d.style === 'flat') continue; // airport apron stays open
-        if (d.style === 'beach') { if (roll < 0.25) this.addTree(cx, cy, rng); continue; }
+        if (cy > 3300) { if (roll < 0.25) this.addTree(cx, cy, rng); continue; } // beach strip
         if (d.style === 'house' && roll < 0.3) { this.addPark(bx, by, bw, bh, rng); continue; }
         this.fillBlock(bx, by, bw, bh, d, rng);
       }
@@ -68,7 +68,7 @@ var City = {
   fillBlock: function (bx, by, bw, bh, d, rng) {
     var self = this;
     function put(x, y, w, h, hgt, color) {
-      if (self.nearLandmark(x + w / 2, y + h / 2, 120)) return;
+      if (self.nearLandmark(x + w / 2, y + h / 2, 90)) return;
       self.buildings.push({ x: x, y: y, w: w, h: h, hgt: hgt, color: color, style: d.style });
     }
     var palette = {
@@ -80,8 +80,9 @@ var City = {
     }[d.style] || ['#888888'];
     var col = function () { return palette[Math.floor(rng() * palette.length)]; };
     if (d.style === 'tower') {
-      put(bx + 20, by + 20, bw - 40, bh - 40, 40 + rng() * 60, col());
-      if (rng() < 0.5) put(bx + bw * 0.6, by + bh * 0.55, bw * 0.3, bh * 0.3, 25 + rng() * 30, col());
+      put(bx + 20, by + 20, bw * 0.55, bh * 0.55, 40 + rng() * 60, col());
+      put(bx + bw * 0.62, by + 20, bw * 0.3, bh * 0.4, 25 + rng() * 30, col());
+      put(bx + bw * 0.62, by + bh * 0.55, bw * 0.3, bh * 0.35, 20 + rng() * 25, col());
     } else if (d.style === 'ware') {
       put(bx + 10, by + 10, bw - 20, bh * 0.45, 14, col());
       put(bx + 10, by + bh * 0.55, bw - 20, bh * 0.35, 12, col());
@@ -90,7 +91,7 @@ var City = {
       put(bx + bw * 0.55, by + 15, bw * 0.35, bh * 0.45, 18 + rng() * 16, col());
       put(bx + bw * 0.55, by + bh * 0.6, bw * 0.35, bh * 0.3, 12, col());
     } else if (d.style === 'house') {
-      var n = 2 + Math.floor(rng() * 3);
+      var n = 3 + Math.floor(rng() * 2);
       for (var i = 0; i < n; i++) {
         var hw = 70 + rng() * 60, hh = 60 + rng() * 50;
         put(bx + 15 + rng() * (bw - hw - 30), by + 15 + rng() * (bh - hh - 30), hw, hh, 9 + rng() * 5, col());
@@ -99,6 +100,7 @@ var City = {
       put(bx + 20, by + 20, bw * 0.4, bh * 0.4, 12 + rng() * 10, col());
       put(bx + bw * 0.55, by + 20, bw * 0.35, bh * 0.35, 10 + rng() * 8, col());
       put(bx + 20, by + bh * 0.55, bw * 0.35, bh * 0.35, 10 + rng() * 8, col());
+      put(bx + bw * 0.55, by + bh * 0.55, bw * 0.35, bh * 0.35, 10 + rng() * 8, col());
     }
   },
   districtAt: function (x, y) {

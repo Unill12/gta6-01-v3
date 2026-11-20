@@ -58,17 +58,31 @@ var Enemies = {
       var d = dist(e.x, e.y, p.x, p.y);
       e.walkPhase += dt * 8;
       e.shootCd -= dt;
+      // Never stay inside a building: push out every frame, whatever the state.
+      var push0 = City.collideCircle(e.x, e.y, 12);
+      if (push0) { e.x += push0.x; e.y += push0.y; }
       var ta = angTo(e.x, e.y, p.x, p.y);
       e.angle = angLerp(e.angle, ta, Math.min(1, dt * 4));
-      if (d > 260) {
-        // Advance toward the player.
+      var los = !lineBlocked(e.x, e.y, p.x, p.y);
+      if (d > 260 || !los) {
+        // Advance toward the player (also when a building blocks the shot).
         var nx = e.x + Math.cos(e.angle) * e.speed * dt;
         var ny = e.y + Math.sin(e.angle) * e.speed * dt;
         var push = City.collideCircle(nx, ny, 12);
-        if (push) { nx += push.x; ny += push.y; }
+        if (push) {
+          nx += push.x; ny += push.y;
+          // Wall slide: a head-on push into a wall makes zero progress, so
+          // slide along the wall toward the side nearer the player.
+          var tx = -push.y, ty = push.x, tl = Math.hypot(tx, ty) || 1;
+          tx /= tl; ty /= tl;
+          if ((p.x - e.x) * tx + (p.y - e.y) * ty < 0) { tx = -tx; ty = -ty; }
+          nx += tx * e.speed * dt * 0.9; ny += ty * e.speed * dt * 0.9;
+          var push2 = City.collideCircle(nx, ny, 12);
+          if (push2) { nx += push2.x; ny += push2.y; }
+        }
         if (!City.inWater(nx, ny)) { e.x = nx; e.y = ny; }
       } else if (d > 60) {
-        // Strafe at mid range.
+        // Strafe at mid range while the shot is clear.
         var strafe = Math.sin(Game.time * 0.7 + i) * 0.6;
         e.x += Math.cos(e.angle + Math.PI / 2) * strafe * e.speed * 0.5 * dt;
         e.y += Math.sin(e.angle + Math.PI / 2) * strafe * e.speed * 0.5 * dt;

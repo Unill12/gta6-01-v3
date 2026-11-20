@@ -205,7 +205,9 @@ var Game = {
   setupShot: function (name) {
     var self = this;
     this.startGame(false);
-    // Skip the mission intro for staged shots.
+    // Skip the mission intro for staged shots: hide the mission-0 title
+    // banner startGame just showed, so the scene is unobstructed.
+    Hud.hide('banner'); Hud.hide('subbanner'); Hud.bannerTimer = 0;
     Missions.active = false;
     if (name === 'chase') {
       Weather.time = 900; // 15:00
@@ -215,13 +217,11 @@ var Game = {
       Police.heat = 220; Police.wanted = 3;
       Police.spawnCruiser(); Police.spawnCruiser(); Police.spawnCruiser();
       Missions.index = 1; Missions.step = 2; Missions.active = true;
-      this.toast('Chase scene staged');
     } else if (name === 'city') {
       Weather.time = 600; // 10:00
       Player.x = 1200; Player.y = 3120;
       Player.giveWeapon('pistol', 60);
       Entities.spawnCrowd(30, 1200, 3120, 500);
-      this.toast('City scene staged');
     } else if (name === 'mission') {
       Weather.time = 1080; // 18:00 dusk
       Player.x = 960; Player.y = 2050;
@@ -230,7 +230,6 @@ var Game = {
       Missions.index = 10; Missions.step = 1; Missions.active = true;
       Enemies.spawnSquad(960, 2160, 8, {});
       Police.heat = 0; Police.wanted = 0;
-      this.toast('Mission scene staged');
     } else if (name === 'night') {
       Weather.time = 1320; // 22:00
       Weather.rain = 0.7;
@@ -240,7 +239,6 @@ var Game = {
       Police.heat = 120; Police.wanted = 2;
       Police.spawnCruiser();
       Missions.index = 5; Missions.step = 1; Missions.active = true;
-      this.toast('Night scene staged');
     }
     Render.cam.x = Player.x; Render.cam.y = Player.y;
     setTimeout(function () { window.__shotReady = true; }, 1800);

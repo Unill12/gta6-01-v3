@@ -37,3 +37,12 @@ function circleBox(cx, cy, r, bx, by, bw, bh) {
   return { x: dx * push, y: dy * push };
 }
 function pointInBox(x, y, bx, by, bw, bh) { return x >= bx && x <= bx + bw && y >= by && y <= by + bh; }
+// True if a building blocks the straight segment between two points.
+function lineBlocked(x1, y1, x2, y2) {
+  var d = dist(x1, y1, x2, y2), steps = Math.ceil(d / 14);
+  for (var i = 1; i < steps; i++) {
+    var t = i / steps;
+    if (City.insideBuilding(x1 + (x2 - x1) * t, y1 + (y2 - y1) * t, 0)) return true;
+  }
+  return false;
+}

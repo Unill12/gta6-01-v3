@@ -27,8 +27,8 @@ var Vehicles = {
       var type = pick(['sedan', 'coupe', 'sports', 'muscle', 'suv', 'pickup', 'van', 'convert', 'taxi', 'scooter']);
       var ax = pick(City.avenues), sy = rand(300, CFG.WORLD_H - 300);
       var useAve = Math.random() < 0.5;
-      var x = useAve ? ax + (Math.random() < 0.5 ? -38 : 38) : rand(300, CFG.WORLD_W - 300);
-      var y = useAve ? sy : pick(City.streets) + (Math.random() < 0.5 ? -38 : 38);
+      var x = useAve ? ax + (Math.random() < 0.5 ? -26 : 26) : rand(300, CFG.WORLD_W - 300);
+      var y = useAve ? sy : pick(City.streets) + (Math.random() < 0.5 ? -26 : 26);
       if (City.inWater(x, y) || City.insideBuilding(x, y, 24)) continue;
       var angle = useAve ? (Math.random() < 0.5 ? -Math.PI / 2 : Math.PI / 2) : (Math.random() < 0.5 ? 0 : Math.PI);
       this.spawn(type, x, y, angle, { parked: true });
@@ -75,14 +75,21 @@ var Vehicles = {
     if (input.handbrake) v.speed *= (1 - 1.6 * dt);
     var nx = v.x + Math.cos(v.angle) * v.speed * dt;
     var ny = v.y + Math.sin(v.angle) * v.speed * dt;
-    // Building collision: slide along walls, spark + slow on hard hits.
-    var push = City.collideCircle(nx, ny, def.l / 2 * 0.82);
-    if (push) {
-      var impact = Math.abs(v.speed);
-      if (impact > 220) { v.health -= impact * 0.045; Particles.impact(nx, ny, 6); AudioSys.crash(); }
-      v.speed *= 0.55;
-      nx += push.x; ny += push.y;
+    // Building collision: check front + rear axle points (a car's real shape),
+    // so driving along a road edge does not scrape the buildings.
+    var halfL = def.l / 2 - 8, rad = def.w / 2 + 4;
+    var ca = Math.cos(v.angle), sa = Math.sin(v.angle);
+    var impact = Math.abs(v.speed);
+    var pushF = City.collideCircle(nx + ca * halfL, ny + sa * halfL, rad);
+    if (pushF) { nx += pushF.x; ny += pushF.y; }
+    var pushR = City.collideCircle(nx - ca * halfL, ny - sa * halfL, rad);
+    if (pushR) { nx += pushR.x; ny += pushR.y; }
+    if ((pushF || pushR) && impact > 220) {
+      v.health -= impact * 0.045;
+      Particles.impact(nx, ny, 6);
+      AudioSys.crash();
     }
+    if (pushF || pushR) v.speed *= 0.55;
     var c = City.clampToWorld(nx, ny, 30);
     v.x = c.x; v.y = c.y;
     v.vx = Math.cos(v.angle) * v.speed; v.vy = Math.sin(v.angle) * v.speed;
@@ -101,7 +108,10 @@ var Vehicles = {
     Particles.explosion(v.x, v.y);
     AudioSys.explosion();
     if (typeof Game !== 'undefined' && Game.shake) Game.shake(14);
-    if (typeof Game !== 'undefined' && Game.player && Game.player.car === v) Game.player.car = null;
+    if (typeof Game !== 'undefined' && Game.player && Game.player.car === v) {
+      Game.player.car = null;
+      Game.player.onFoot = true; // the wreck is gone — Vex is on foot
+    }
     var idx = this.list.indexOf(v);
     if (idx >= 0) this.list.splice(idx, 1);
     // Chain: nearby vehicles take damage.
