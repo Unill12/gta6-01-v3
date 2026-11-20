@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vermilion Bay — Open World Crime</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="wrap">
+  <canvas id="game" width="1280" height="800"></canvas>
+  <!-- HUD -->
+  <div id="hud" class="hidden">
+    <div id="topleft">
+      <div id="healthbar"><div id="healthfill"></div></div>
+      <div id="armorbar"><div id="armorfill"></div></div>
+      <div id="cashline">$<span id="cash">0</span></div>
+      <div id="districtline"><span id="district">Old Town</span></div>
+    </div>
+    <div id="topright">
+      <div id="stars"></div>
+      <div id="clockline"><span id="clock">12:00</span> <span id="weathericon">☀</span></div>
+      <div id="dateline">Day <span id="daynum">1</span></div>
+    </div>
+    <div id="objective"><span id="objtext"></span></div>
+    <div id="banner" class="hidden"></div>
+    <div id="subbanner" class="hidden"></div>
+    <div id="minimapwrap"><canvas id="minimap" width="220" height="164"></canvas></div>
+    <div id="bottomright">
+      <div id="weaponline"><span id="weaponname">Fists</span> <span id="ammo"></span></div>
+      <div id="speedline" class="hidden"><span id="speed">0</span> mph · <span id="carname"></span></div>
+    </div>
+    <div id="hintline"></div>
+    <div id="vignette"></div>
+    <div id="crosshair" class="hidden"></div>
+    <div id="toast"></div>
+  </div>
+  <!-- Title screen -->
+  <div id="title" class="screen">
+    <h1>VERMILION BAY</h1>
+    <p class="tagline">An open-world crime story &middot; a city of sun, neon &amp; bad decisions</p>
+    <p class="story">Maya "Vex" Rook came home to bury her brother. Silas Kane's syndicate
+      runs the Bay now — and Vex intends to take it back, one job at a time.</p>
+    <button id="playBtn">▶ NEW GAME</button>
+    <button id="continueBtn" class="hidden">CONTINUE</button>
+    <div class="controls">
+      <b>WASD / Arrows</b> move &amp; drive &nbsp;·&nbsp; <b>Mouse</b> aim &nbsp;·&nbsp; <b>Click</b> shoot<br>
+      <b>E</b> enter / exit vehicle &nbsp;·&nbsp; <b>1–8</b> weapons &nbsp;·&nbsp; <b>Space</b> handbrake<br>
+      <b>Shift</b> sprint &nbsp;·&nbsp; <b>P / Esc</b> pause &nbsp;·&nbsp; <b>H</b> help &nbsp;·&nbsp; <b>M</b> mute
+    </div>
+    <p class="foot">12 story missions · 20 vehicles · 8 weapons · 7 districts · 60 hidden packages<br>
+      Taxi fares · street races · stunt jumps · contract hits · buyable properties</p>
+  </div>
+  <!-- Pause screen -->
+  <div id="pause" class="screen hidden">
+    <h2>PAUSED</h2>
+    <div id="pausestats"></div>
+    <button id="resumeBtn">RESUME</button>
+    <button id="restartBtn">RESTART DAY</button>
+    <button id="quitBtn">QUIT TO TITLE</button>
+    <p class="foot">Progress saves automatically.</p>
+  </div>
+  <!-- Help overlay -->
+  <div id="help" class="screen hidden">
+    <h2>HOW TO PLAY</h2>
+    <div class="helpbody">
+      <p><b>On foot:</b> WASD moves, mouse aims, click shoots. Walk into a car and press E to steal it.</p>
+      <p><b>Driving:</b> W accelerate, S brake/reverse, A/D steer, Space handbrake. Ramming police and pedestrians raises your wanted level.</p>
+      <p><b>Wanted:</b> stars bring police. At 3★ roadblocks appear, at 4★ a helicopter hunts you. Stay out of sight to cool down. If a cop corners you on foot, you get BUSTED.</p>
+      <p><b>Missions:</b> follow the yellow marker. Complete all 12 to finish Vex's story and take the Bay from Silas Kane.</p>
+      <p><b>Money:</b> missions, taxi fares, races, stunt jumps, contract hits and hidden packages all pay. Buy weapons at Ironworks Arms, cars at Vex Motors, and properties that pay you rent every day.</p>
+      <p><b>Save:</b> your cash, mission, weapons, properties and packages save automatically.</p>
+    </div>
+    <button id="closeHelpBtn">CLOSE</button>
+  </div>
+  <!-- Wasted / busted -->
+  <div id="dead" class="screen hidden">
+    <h2 id="deadtitle">WASTED</h2>
+    <p id="deadtext"></p>
+    <button id="respawnBtn">RESPAWN AT HOSPITAL</button>
+  </div>
+</div>
+<script src="js/config.js"></script>
+<script src="js/util.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/input.js"></script>
+<script src="js/city.js"></script>
+<script src="js/vehicles.js"></script>
+<script src="js/entities.js"></script>
+<script src="js/player.js"></script>
+<script src="js/police.js"></script>
+<script src="js/enemies.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/weather.js"></script>
+<script src="js/economy.js"></script>
+<script src="js/activities.js"></script>
+<script src="js/missions.js"></script>
+<script src="js/save.js"></script>
+<script src="js/render.js"></script>
+<script src="js/hud.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

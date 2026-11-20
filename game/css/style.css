@@ -1,0 +1,53 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a12; }
+body { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: #fff; }
+#wrap { position: relative; width: 1280px; height: 800px; margin: 0 auto; overflow: hidden; background: #000; }
+#game { display: block; width: 1280px; height: 800px; }
+.hidden { display: none !important; }
+
+/* ---------- HUD ---------- */
+#hud { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+#topleft { position: absolute; top: 14px; left: 14px; }
+#healthbar, #armorbar { width: 220px; height: 12px; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.35); border-radius: 3px; margin-bottom: 5px; overflow: hidden; }
+#healthfill { height: 100%; width: 100%; background: linear-gradient(90deg, #e33, #f66); }
+#armorfill { height: 100%; width: 0%; background: linear-gradient(90deg, #36c, #6af); }
+#cashline { font-size: 26px; font-weight: 800; color: #7dff8a; text-shadow: 0 2px 4px #000; letter-spacing: 1px; }
+#districtline { font-size: 13px; color: #ffd76a; text-shadow: 0 1px 3px #000; letter-spacing: 2px; text-transform: uppercase; }
+#topright { position: absolute; top: 14px; right: 14px; text-align: right; }
+#stars { font-size: 26px; letter-spacing: 3px; color: #ffb400; text-shadow: 0 0 8px #f80, 0 2px 4px #000; min-height: 30px; }
+#clockline { font-size: 20px; font-weight: 700; text-shadow: 0 2px 4px #000; }
+#dateline { font-size: 12px; color: #cde; text-shadow: 0 1px 3px #000; letter-spacing: 1px; }
+#objective { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); max-width: 560px; background: rgba(0,0,0,.55); border-left: 4px solid #ffd76a; padding: 8px 14px; font-size: 15px; font-weight: 600; border-radius: 3px; text-shadow: 0 1px 2px #000; }
+#banner { position: absolute; top: 34%; left: 50%; transform: translate(-50%,-50%); font-size: 54px; font-weight: 900; letter-spacing: 4px; color: #ffd76a; text-shadow: 0 0 18px rgba(255,180,0,.7), 0 4px 8px #000; text-align: center; }
+#subbanner { position: absolute; top: calc(34% + 52px); left: 50%; transform: translateX(-50%); font-size: 20px; font-weight: 600; color: #fff; text-shadow: 0 2px 6px #000; text-align: center; }
+#minimapwrap { position: absolute; left: 14px; bottom: 14px; border: 2px solid rgba(255,255,255,.45); border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,.6); background: #123; }
+#minimap { display: block; }
+#bottomright { position: absolute; right: 14px; bottom: 14px; text-align: right; text-shadow: 0 2px 4px #000; }
+#weaponline { font-size: 20px; font-weight: 700; }
+#ammo { color: #ffd76a; }
+#speedline { font-size: 22px; font-weight: 800; color: #fff; }
+#speedline span { color: #9fd8ff; }
+#hintline { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); font-size: 15px; font-weight: 600; background: rgba(0,0,0,.6); padding: 6px 14px; border-radius: 4px; }
+#vignette { position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 120px rgba(255,0,0,0); transition: box-shadow .2s; }
+#crosshair { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; border: 2px solid rgba(255,255,255,.9); border-radius: 50%; box-shadow: 0 0 4px #000; }
+#crosshair:after { content: ""; position: absolute; left: 9px; top: 9px; width: 2px; height: 2px; background: #fff; border-radius: 50%; }
+#toast { position: absolute; bottom: 200px; left: 50%; transform: translateX(-50%); font-size: 17px; font-weight: 700; color: #7dff8a; text-shadow: 0 2px 4px #000; text-align: center; }
+
+/* ---------- Screens ---------- */
+.screen { position: absolute; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: linear-gradient(180deg, rgba(10,8,30,.82), rgba(40,10,40,.88)); }
+.screen h1 { font-size: 84px; font-weight: 900; letter-spacing: 10px; color: #ffd76a; text-shadow: 0 0 30px rgba(255,150,0,.8), 0 6px 12px #000; }
+.screen h2 { font-size: 56px; font-weight: 900; letter-spacing: 6px; color: #ffd76a; text-shadow: 0 4px 10px #000; margin-bottom: 14px; }
+.tagline { font-size: 19px; color: #ffe9a8; margin: 6px 0 18px; letter-spacing: 1px; }
+.story { max-width: 640px; font-size: 16px; line-height: 1.55; color: #e8e4ff; margin-bottom: 26px; }
+button { pointer-events: auto; cursor: pointer; font: 800 20px "Segoe UI", Arial, sans-serif; letter-spacing: 2px; color: #1a0b00; background: linear-gradient(180deg, #ffd76a, #f5a623); border: none; border-radius: 6px; padding: 14px 42px; margin: 6px; box-shadow: 0 4px 14px rgba(0,0,0,.5); }
+button:hover { filter: brightness(1.12); }
+.controls { margin-top: 22px; font-size: 14px; line-height: 1.9; color: #cfd4ff; }
+.controls b { color: #ffd76a; }
+.foot { margin-top: 20px; font-size: 13px; color: #9aa3c7; line-height: 1.6; }
+#pausestats { font-size: 16px; line-height: 1.9; color: #e8e4ff; margin-bottom: 18px; }
+#pausestats b { color: #ffd76a; }
+.helpbody { max-width: 720px; text-align: left; font-size: 15px; line-height: 1.6; color: #e8e4ff; margin-bottom: 20px; }
+.helpbody p { margin-bottom: 10px; }
+.helpbody b { color: #ffd76a; }
+#deadtitle { color: #ff4444; text-shadow: 0 0 24px rgba(255,0,0,.8), 0 4px 10px #000; }
+#deadtext { font-size: 17px; color: #e8e4ff; margin-bottom: 22px; }
